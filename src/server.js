@@ -7,6 +7,11 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.mongoUri)
     .then(() => {
         console.log("Connected to MongoDB");
+    })
+    .catch((err) => {
+        console.error("MongoDB connection error:", err.message);
+        console.error("MongoDB URI used:", config.mongoUri);
+        process.exit(1);
     });
 
 mongoose.connection.on('error', () => {
