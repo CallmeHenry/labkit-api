@@ -12,7 +12,7 @@ const signAccessToken = (userid) => {
 
 const register = async (req, res) => {
   try {
-    const { email, password, name } = req.body;
+    const { email, password, name, position, department, phone } = req.body;
     
     if (!email || !password || !name) {
       return res.status(400).json({ error: 'Email, password, and name are required' });
@@ -25,7 +25,14 @@ const register = async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const user = await User.create({ email, name, passwordHash });
+    const user = await User.create({ 
+      email, 
+      name, 
+      passwordHash,
+      position,
+      department,
+      phone
+    });
     
     if (user) {
       return res.status(201).json({ isReg: true });
@@ -59,6 +66,9 @@ const signin = async (req, res) => {
         user: {
           name: user.name,
           email: user.email,
+          position: user.position,
+          department: user.department,
+          phone: user.phone,
           _id: user._id
         }
       });
