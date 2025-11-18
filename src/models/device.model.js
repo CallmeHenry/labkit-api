@@ -1,51 +1,78 @@
 import mongoose from 'mongoose';
 
-const DeviceSchema = new mongoose.Schema({
+const deviceSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    type: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    status: {
+        type: String,
+        enum: ['available', 'in-use', 'maintenance'],
+        default: 'available'
+    },
+    description: {
+        type: String,
+        trim: true
+    },
     asset: {
         type: String,
-        trim: true,
-        required: false
+        trim: true
     },
     serial: {
         type: String,
-        trim: true,
-        required: false
+        trim: true
     },
     model: {
         type: String,
-        trim: true,
-        required: false
+        trim: true
     },
     brand: {
         type: String,
-        trim: true,
-        required: false
+        trim: true
     },
     processor: {
         type: String,
-        trim: true,
-        required: false
+        trim: true
     },
     ram: {
         type: String,
-        trim: true,
-        required: false
+        trim: true
     },
     storage: {
         type: String,
-        trim: true,
-        required: false
+        trim: true
     },
     os: {
         type: String,
-        trim: true,
-        required: false
+        trim: true
     },
     screen: {
         type: String,
-        trim: true,
-        required: false
+        trim: true
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    },
+    updated: {
+        type: Date
     }
 });
 
-export default mongoose.model('Device', DeviceSchema);
+deviceSchema.pre('save', function (next) {
+    this.updated = Date.now();
+    next();
+});
+
+const Device = mongoose.model('Device', deviceSchema);
+export default Device;
