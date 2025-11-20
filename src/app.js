@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import authRoutes from './routes/auth.routes.js';
 import deviceRoutes from './routes/device.routes.js';
 import userRoutes from './routes/user.routes.js';
@@ -6,9 +7,10 @@ import userRoutes from './routes/user.routes.js';
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to LabKit API' });
+    res.json({message: 'Welcome to LabKit API'});
 });
 
 app.use('/api/auth', authRoutes);
