@@ -25,13 +25,18 @@ const register = async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
+    // Check if this is the first user
+    const userCount = await User.countDocuments();
+    const isAdmin = userCount === 0;
+
     const user = await User.create({ 
       email, 
       name, 
       passwordHash,
       position,
       department,
-      phone
+      phone,
+      isAdmin
     });
     
     if (user) {
@@ -69,6 +74,7 @@ const signin = async (req, res) => {
           position: user.position,
           department: user.department,
           phone: user.phone,
+          isAdmin: user.isAdmin,
           _id: user._id
         }
       });

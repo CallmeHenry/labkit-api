@@ -79,6 +79,12 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
+    // Check if requesting user is admin
+    const requestingUser = await User.findById(req.userid);
+    if (!requestingUser || (!requestingUser.isAdmin && requestingUser.isAdmin !== 'true')) {
+      return res.status(403).json({ error: 'Only admins can delete users' });
+    }
+
     const user = await User.findByIdAndDelete(req.params.id);
 
     if (!user) {
