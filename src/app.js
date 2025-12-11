@@ -14,10 +14,11 @@ const allowedOrigins = [
 
 app.use(express.json());
 app.use(cors({
-    origin: allowedOrigins,
+    origin: process.env.NODE_ENV === 'production' ? allowedOrigins : true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
 }));
+
 
 app.get('/', (req, res) => {
     res.json({message: 'Welcome to LabKit API'});
