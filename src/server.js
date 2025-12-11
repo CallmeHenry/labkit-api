@@ -18,9 +18,11 @@ mongoose.connection.on('error', () => {
     throw new Error(`Unable to connect to the database: ${config.mongoUri}`);
 });
 
-app.listen(config.port, (err) => {
-    if (err) {
-        console.log(err);
-    }
-    console.info(`Server started on port ${config.port}`);
-});
+if (process.env.NODE_ENV === 'development') {
+    app.listen(config.port, (err) => {
+        if (err) {
+            console.log(err);
+        }
+        console.info(`Server started on port ${config.port}`);
+    });
+}
