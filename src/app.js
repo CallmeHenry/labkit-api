@@ -6,8 +6,18 @@ import userRoutes from './routes/user.routes.js';
 
 const app = express();
 
+const allowedOrigins = [
+    "https://labkit.ca",
+    "https://marvelous-crepe-7e48da.netlify.app",
+    "http://localhost:5173"
+];
+
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+}));
 
 app.get('/', (req, res) => {
     res.json({message: 'Welcome to LabKit API'});
